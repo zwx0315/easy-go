@@ -1,0 +1,173 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/eg_authorization?autoReconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    #数据库连接池
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 8000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+   #管理页面配置
+    registration:
+      url: /druid/*
+      addUrlPatterns: /*
+      addInitParameter:
+        #白名单，如果不配置或value为空，则允许所有
+        allow: 127.0.0.1,192.0.0.1
+        #黑名单，与白名单存在相同IP时，优先于白名单
+        deny: 192.0.0.1
+        #用户名
+        loginUsername: root
+        #密码
+        loginPassword: yangchengfu
+        ##禁用页面上的“Reset All”功能
+        resetEnable: false
+        urlPatternsu: /*
+  rabbitmq:
+    username: admin
+    password: admin
+  redis:
+    port: 6379
+    password: 123456
+    host: localhost
+    timeout: 3000
+    pool:
+      maxActice: 300
+      maxWait: -1
+      maxIdle: 8
+      minIdle: 0
+  session:
+    store-type: redis
+  http:
+    encoding:
+      enabled: true
+      charset: utf-8
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 8MB
+  jps:
+    showsql: true
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            ##断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试
+            timeoutInMilliseconds: 50000
+ribbon:
+  ##请求处理的超时时间
+  ReadTimeout: 50000
+  ##请求连接的超时时间
+  ConnectTimeout: 5000
+  ##对当前实例的重试次数
+  MaxAutoRetries: 2
+  ##对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+  ##切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+management:
+  security:
+    enabled: false
+service:
+  shuli:
+    access_id:
+    access_key:
+    url: https://bds-openapi.shulidata.com
+##权限控制的资源
+  security:
+    resourceId: user_api
+    oauthToken: http://localhost:8768/oauth/token
+    filters: {userInfo:[author,login]}
+    oauth: false
+##swagger api接口配置
+  swagger:
+    basePackage: com.bfkt.qfx.user
+    title: 用户接口
+    contactName: 张三
+    contactUrl: https://www.baidu.com
+    email: 772395012@qq.com
+    description: 所有关于用户的基本接口信息
+    ##七牛云
+  qiniu:
+    accessKey:
+    secretKey: -
+    url: http://ou0206y97.bkt.clouddn.com/
+    bucket: image
+    expires: 72000
+    speech:
+      url:
+  mapper:
+    location: classpath*:com/huihe/eg/authorization/mybaties/mapper/*Mapper.xml
+    config:
+      location: mybatis-config.xml
+  ftp:
+    host:
+    port: 21
+    userName: test
+    password: test
+    home:
+    url:
+  pay:
+    wx:
+      machId:
+      certPath:
+      notify_url:
+      key:
+      ## app
+      appId:
+      appSecret:
+      ## 公众号
+      gAppId:
+      gAppSecret:
+      ##小程序
+      xAppid:
+      xAppSecret:
+    ali:
+      ##请求的url
+      url:
+      ##授权的回调链接
+      redirect_url:
+      ## 授权认证的URL
+      auth_url:
+      ##异步通知的url
+      notify_url:
+      #pc/h5支付完成 返回的url
+      return_url:
+      ##支付宝的商户APPID
+      app_id:
+      ## 商户的私钥
+      app_private_key:
+      ##商户的公钥
+      app_public_key:
+      ## 支付宝的公钥
+      alipay_public_key:
+      ## 签名的类型
+      sign_type: RSA2
+      ##数据格式化的类型
+      format: JSON
+      ##编码的类型
+      charset: UTF-8
